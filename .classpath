@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="var" path="USER_HOME/Escritorio/3.MAILA/2.LAUHILABETEA/WEKA/weka/weka-3-8-5/weka.jar"/>
+	<classpathentry kind="output" path="out/production/ConfusionMatrix"/>
+</classpath>
