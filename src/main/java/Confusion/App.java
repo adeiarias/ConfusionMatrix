@@ -3,8 +3,11 @@ package Confusion;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.evaluation.Prediction;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
+
+import java.util.List;
 
 public class App {
 
@@ -22,18 +25,17 @@ public class App {
     }
 
     private static void exersice(Classifier naive) throws Exception {
-        //CROSS VALIDATION
         Evaluation evaluation = new Evaluation(data);
-        double[] predictions = evaluation.evaluateModel(naive,data);
-        createConfusionMatrix(predictions,data,evaluation);
+        evaluation.evaluateModel(naive,data);
+        createConfusionMatrix(evaluation);
     }
 
-    private static void createConfusionMatrix(double[] prediction, Instances test, Evaluation eval) throws Exception {
-        int distinct = test.attribute(test.classIndex()).numValues();
-        //ERRENKADAK VALOR REAL
-        //ZUTABEAK VALOR ESTIMADO
-        int errenkada,zutabea;
-        System.out.println("MATRIZEA ESKUZ");
+    private static void createConfusionMatrix(Evaluation eval) throws Exception {
+        int distinct = data.attribute(data.classIndex()).numValues();
+        //ROW REAL VALUE
+        //COLUMN PREDICTED VALUE
+        int row,column;
+        System.out.println("CONFUSION MATRIX");
         int[][] matrix = new int[distinct][distinct];
 
         for(int i = 0; i<matrix.length; i++){
@@ -42,10 +44,11 @@ public class App {
             }
         }
 
-        for(int i=0; i<prediction.length; i++){
-            errenkada = (int)test.get(i).value(test.classIndex());
-            zutabea = (int)prediction[i];
-            matrix[errenkada][zutabea] += 1;
+        List<Prediction> list = eval.predictions();
+        for(int i=0; i<list.size(); i++){
+            row = (int)list.get(i).actual();
+            column = (int)list.get(i).predicted();
+            matrix[row][column] += 1;
         }
 
         for (int x=0; x < matrix.length; x++) {
